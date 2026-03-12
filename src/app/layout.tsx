@@ -4,8 +4,23 @@ import CustomCursor from "@/components/CustomCursor";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "RVE STUDIOS | Premium Creative Agency",
-  description: "Crafting visual narratives for the next era of icons. Trusted by top creators and brands.",
+  title: "[rve] Premium Content Agency",
+  description: "RVE is a premium content agency helping thought leaders and global brands grow through strategy, storytelling.",
+  openGraph: {
+    title: "[rve] Premium Content Agency",
+    description: "RVE is a premium content agency helping thought leaders and global brands grow through strategy, storytelling.",
+    url: "https://rvestudios.vercel.app",
+    siteName: "RVE Studios",
+    images: [
+      {
+        url: "/og-image.png", // User likely has an image or I'll provide a placeholder logic
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

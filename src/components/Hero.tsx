@@ -28,7 +28,11 @@ export default function Hero() {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2, ease: [0.16, 1, 0.3, 1] as any } // eslint-disable-line @typescript-eslint/no-explicit-any
+      transition: { 
+        staggerChildren: 0.1, 
+        delayChildren: 0.2, 
+        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+      }
     }
   };
 
@@ -37,47 +41,43 @@ export default function Hero() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any } // eslint-disable-line @typescript-eslint/no-explicit-any
+      transition: { 
+        duration: 0.8, 
+        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+      }
     }
   };
 
   return (
-    <section className="relative min-h-screen pt-40 pb-12 px-6 bg-black">
+    <section className="relative min-h-screen pt-48 pb-12 px-6 bg-black">
       <motion.div 
         initial="hidden"
         animate="visible"
         variants={containerVariants}
         className="max-w-[1200px] mx-auto text-center"
       >
-        {/* Label (Pill style) */}
-        <motion.div variants={itemVariants} className="mb-12">
-          <span className="font-sans text-[12px] tracking-[0.2em] text-[#86868B] font-bold uppercase py-2 px-4 rounded-full bg-white/[0.03] border border-white/5">
+        {/* Label (Small centered text as per screenshot) */}
+        <motion.div variants={itemVariants} className="mb-14">
+          <span className="font-sans text-[11px] tracking-[0.2em] text-[#86868B] font-bold uppercase opacity-40">
             [rve]
           </span>
         </motion.div>
 
-        {/* Main Title */}
+        {/* Main Title (96px md, 56px sm) */}
         <motion.h1 
           variants={itemVariants}
-          className="font-sans text-[56px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[1.1] mb-8"
+          className="font-sans text-[64px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[1] mb-12"
         >
           A premium <br /> content agency.
         </motion.h1>
 
-        {/* Subtitle */}
+        {/* Subtitle (Small and clean) */}
         <motion.p 
           variants={itemVariants} 
-          className="font-sans text-[#86868B] text-xl md:text-[22px] font-medium opacity-80 mb-10"
+          className="font-sans text-[#86868B] text-base md:text-[18px] font-medium opacity-60 mb-20"
         >
           Trusted by top thought leaders and global brands.
         </motion.p>
-
-        {/* Yellow Circle Dot */}
-        <motion.div variants={itemVariants} className="flex justify-center mb-12">
-          <div className="w-6 h-6 rounded-full border border-yellow-500/50 flex items-center justify-center">
-            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 shadow-[0_0_10px_#eab308]" />
-          </div>
-        </motion.div>
 
         {/* Modern Icons Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -92,22 +92,22 @@ export default function Hero() {
                 <img 
                   src={icon.image} 
                   alt={icon.name} 
-                  className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105" 
                 />
                 
                 {/* Bottom Gradient Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-8 pt-20 bg-gradient-to-t from-black via-black/40 to-transparent">
+                <div className="absolute inset-x-0 bottom-0 p-8 pt-24 bg-gradient-to-t from-black via-black/60 to-transparent">
                   <h3 className="font-sans text-white text-3xl font-bold mb-1 tracking-tight">
                     {icon.name}
                   </h3>
-                  <span className="font-sans text-[#86868B] text-sm font-medium tracking-wide">
+                  <span className="font-sans text-[#86868B] text-sm font-medium tracking-wide opacity-60">
                     {icon.handle}
                   </span>
                 </div>
               </div>
 
               {/* Description below card */}
-              <p className="font-sans text-[#86868B] text-[15px] leading-relaxed font-medium opacity-70 group-hover:opacity-100 transition-opacity">
+              <p className="font-sans text-[#86868B] text-[15px] leading-relaxed font-medium opacity-60 group-hover:opacity-100 transition-opacity">
                 {icon.description}
               </p>
             </motion.div>
