@@ -52,7 +52,7 @@ export default function Hero() {
         {/* Label (Pill style) */}
         <motion.div variants={itemVariants} className="mb-12">
           <span className="font-sans text-[12px] tracking-[0.2em] text-[#86868B] font-bold uppercase py-2 px-4 rounded-full bg-white/[0.03] border border-white/5">
-            [sei]
+            [rve]
           </span>
         </motion.div>
 
