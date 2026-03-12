@@ -27,12 +27,12 @@ export default function VisionSeries() {
             [ JOIN US ]
           </span>
           
-          <h2 className="font-sans text-4xl md:text-6xl text-white mb-8 font-bold tracking-[-0.04em]">
+          <h2 className="font-sans text-3xl sm:text-4xl md:text-6xl text-white mb-8 font-bold tracking-[-0.04em] leading-[1.1]">
             Introducing <br />
             <span className="text-white italic">The Vision Series</span>
           </h2>
           
-          <p className="font-sans text-xl text-[#86868B] mb-10 opacity-70 leading-relaxed max-w-[500px] font-medium">
+          <p className="font-sans text-base sm:text-lg md:text-xl text-[#86868B] mb-10 opacity-70 leading-relaxed max-w-[500px] font-medium">
             In the world&apos;s greatest studio, we created a platform for the most relevant creators and emerging voices to share their wisdom.
           </p>
 

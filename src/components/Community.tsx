@@ -58,12 +58,12 @@ export default function Community() {
             [ WHO WE ARE ]
           </span>
           
-          <h2 className="font-sans text-4xl md:text-5xl lg:text-7xl text-white mb-10 font-bold tracking-[-0.04em] leading-[1]">
+          <h2 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white mb-10 font-bold tracking-[-0.04em] leading-[1.1]">
              A community of <br />
              <span className="text-white italic">Visionaries.</span>
           </h2>
           
-          <p className="font-sans text-xl text-[#86868B] mb-20 opacity-70 leading-relaxed font-medium">
+          <p className="font-sans text-base sm:text-lg md:text-xl text-[#86868B] mb-20 opacity-70 leading-relaxed font-medium px-4">
             RVE is more than an agency; it&apos;s a global hub for the elite. We gather the minds that shape the future of culture and commerce.
           </p>
 
