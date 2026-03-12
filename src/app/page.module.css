@@ -1,141 +1,230 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
+.main {
   background-color: var(--background);
 }
 
-.main {
+/* Custom Luxury Cursor */
+.cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
   display: flex;
-  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.cursorDot {
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* Navbar (SS 565 Sync - Premium Pill) */
+.navWrapper {
+  position: fixed;
+  top: 40px; /* More breathing room from top */
+  left: 0;
   width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
-}
-
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
-
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
-
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
   display: flex;
   justify-content: center;
+  z-index: 1000;
+}
+
+.navInner {
+  display: flex;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
+  padding: 18px 56px; /* Larger padding as per SS */
+  gap: 64px; /* More spacing between items */
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(40px) saturate(180%); /* Stronger blur & saturation */
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.navLogoGroup {
+  font-weight: 950; /* Inter Black */
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+
+.navLogoText {
+  margin: 0 4px; /* More gap from brackets */
+}
+
+.navLogoBracket { opacity: 0.4; }
+
+.navLinks {
+  display: flex;
+  gap: 40px;
+}
+
+.navLinks a {
+  font-size: 0.95rem; /* Larger font size as per SS */
+  font-weight: 700; /* Bolder weight */
+  text-decoration: none;
+  color: var(--foreground);
+  opacity: 0.95;
+  transition: opacity 0.3s, transform 0.2s;
+}
+
+.navLinks a:hover { 
+  opacity: 1; 
+  transform: translateY(-1px);
+}
+
+/* Hero (SS 537 Sync) */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10vh;
+}
+
+.heroCenter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heroLogoTag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  opacity: 0.4;
+  letter-spacing: 0.02em;
+}
+
+.heroTitleContainer {
+  margin-bottom: 2rem;
+}
+
+.heroTitleLine {
+  font-size: clamp(4.5rem, 18vw, 13rem); /* Maximum impact */
+  font-weight: 950; /* Ultra Black */
+  line-height: 0.78;
+  margin: 0;
+  padding: 0;
+  letter-spacing: -0.07em;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
   font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 7rem;
+  max-width: 600px;
+  opacity: 0.6;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+/* Leader Grid (SS 537 Sync) */
+.heroLeaderGrid {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  justify-content: center;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.heroLeaderCard {
+  width: 320px;
+  aspect-ratio: 1;
+  background: #0d0d0d;
+  border-radius: 48px; /* High rounding */
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+.heroLeaderCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
-
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
+/* Stacking Services */
+.servicesSection {
+  padding: 15rem 0 30rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
+.cardContainer {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+}
 
-  .page {
-    --background: #000;
-    --foreground: #000;
+.serviceCard {
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--card-radius);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1300px;
+  min-height: 600px;
+  overflow: hidden;
+  box-shadow: 0 60px 120px rgba(0,0,0,0.9);
+}
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
+.cardContent {
+  padding: 6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+.cardContent h3 { font-size: 5.5rem; margin-bottom: 2.5rem; line-height: 0.85; }
+.cardContent p { font-size: 1.35rem; color: #555; line-height: 1.5; }
+
+.cardMedia { position: relative; overflow: hidden; }
+.cardMedia img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+.mediaOverlay { position: absolute; inset: 0; background: linear-gradient(to right, #0d0d0d 0%, transparent 25%); }
+
+/* Showcase / BA */
+.showcaseSection { padding: 25rem 0; text-align: center; }
+.subHeading { font-size: clamp(3.5rem, 11vw, 8rem); margin-top: 1.5rem; }
+.baLayout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 7rem; }
+.baItem { text-align: left; }
+.baLabel { font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 2.5rem; opacity: 0.3; }
+.baBox { aspect-ratio: 16/9; background: #080808; border-radius: 48px; border: 1px solid rgba(255,255,255,0.03); }
+
+/* Community */
+.communitySection { padding: 15rem 0 25rem; text-align: center; }
+.massiveMetric { font-size: clamp(6rem, 28vw, 22rem); font-weight: 950; color: var(--accent-green); line-height: 1; margin: 5rem 0; letter-spacing: -0.1em; }
+.metricDesc { font-size: 1.75rem; color: #fff; margin-bottom: 5rem; opacity: 0.8; font-weight: 500; }
+.luxuryLink { color: #fff; font-weight: 700; text-decoration: none; border-bottom: 2px solid #fff; padding-bottom: 5px; font-size: 1.1rem; }
+
+/* Footer */
+.footer { padding: 10rem 0; border-top: 1px solid rgba(255,255,255,0.08); }
+.footerTop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8rem; }
+.footerLogo { font-weight: 950; font-size: 2.5rem; letter-spacing: -0.08em; }
+.footerLinks { display: flex; gap: 5rem; }
+.footerLinks a { color: #444; text-decoration: none; font-weight: 700; font-size: 1rem; transition: color 0.3s; }
+.footerLinks a:hover { color: #fff; }
+.footerBottom { display: flex; justify-content: space-between; opacity: 0.15; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; }
+
+@media (max-width: 1024px) {
+  .navInner { gap: 24px; padding: 12px 32px; }
+  .navLinks { gap: 20px; }
+  .serviceCard { grid-template-columns: 1fr; min-height: auto; }
+  .heroLeaderGrid { flex-direction: column; align-items: center; }
+  .heroLeaderCard { width: 100%; max-width: 350px; }
+  .heroTitleLine { font-size: 4.5rem; }
 }
