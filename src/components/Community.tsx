@@ -52,7 +52,7 @@ export default function Community() {
            initial={{ opacity: 0, y: 30 }}
            whileInView={{ opacity: 1, y: 0 }}
            viewport={{ once: true }}
-           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as any }} // eslint-disable-line @typescript-eslint/no-explicit-any
         >
           <span className="font-sans text-[10px] tracking-[0.4em] opacity-30 uppercase font-bold text-[#86868B] mb-8 block">
             [ WHO WE ARE ]

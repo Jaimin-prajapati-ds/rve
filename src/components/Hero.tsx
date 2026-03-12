@@ -2,12 +2,33 @@
 
 import { motion } from 'framer-motion';
 
+const modernIcons = [
+  {
+    name: "Malcolm Gladwell",
+    handle: "@malcolmgladwell",
+    description: "Seven-time NYT bestselling author, host of Revisionist History",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    name: "Scott Galloway",
+    handle: "@profgalloway",
+    description: "NYU professor, serial entrepreneur, NYT bestselling author",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    name: "Jesse Itzler",
+    handle: "@jesseitzler",
+    description: "Serial entrepreneur, co-owner of Atlanta Hawks, NYT bestselling author",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop"
+  }
+];
+
 export default function Hero() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2, ease: [0.16, 1, 0.3, 1] }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2, ease: [0.16, 1, 0.3, 1] as any } // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   };
 
@@ -16,70 +37,83 @@ export default function Hero() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any } // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   };
 
-  const leaders = [
-    { img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600' },
-    { img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600' },
-    { img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600' }
-  ];
-
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-start pt-[240px] bg-black px-6 overflow-hidden">
+    <section className="relative min-h-screen pt-40 pb-12 px-6 bg-black">
       <motion.div 
-        variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex flex-col items-center text-center max-w-[920px] z-10"
+        variants={containerVariants}
+        className="max-w-[1200px] mx-auto text-center"
       >
-        {/* Top Tag (Synced Branding) */}
+        {/* Label (Pill style) */}
         <motion.div variants={itemVariants} className="mb-12">
-          <span className="font-sans text-lg tracking-tight text-white font-bold opacity-30">
-            [ rve ]
+          <span className="font-sans text-[12px] tracking-[0.2em] text-[#86868B] font-bold uppercase py-2 px-4 rounded-full bg-white/[0.03] border border-white/5">
+            [sei]
           </span>
         </motion.div>
 
-        {/* 1:1 Precise Heading Sync (96px, -3.8px spacing) */}
+        {/* Main Title */}
         <motion.h1 
-          variants={itemVariants} 
-          className="font-sans text-[64px] md:text-[96px] text-white mb-8 leading-[1] font-bold tracking-[-0.04em]"
+          variants={itemVariants}
+          className="font-sans text-[56px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[1.1] mb-8"
         >
-          A premium <br /> <span className="text-white">content agency.</span>
+          A premium <br /> content agency.
         </motion.h1>
 
-        {/* Subtitle (20px, Apple-Gray Sync) */}
+        {/* Subtitle */}
         <motion.p 
           variants={itemVariants} 
-          className="font-sans text-[#86868B] text-xl md:text-[20px] mb-20 max-w-[680px] font-medium leading-[1.2]"
+          className="font-sans text-[#86868B] text-xl md:text-[22px] font-medium opacity-80 mb-10"
         >
           Trusted by top thought leaders and global brands.
         </motion.p>
 
-        {/* Headshot Grid (Tighter scale) */}
-        <motion.div 
-          variants={itemVariants}
-          className="grid grid-cols-3 gap-4 md:gap-6 w-full max-w-[800px]"
-        >
-          {leaders.map((leader, i) => (
+        {/* Yellow Circle Dot */}
+        <motion.div variants={itemVariants} className="flex justify-center mb-12">
+          <div className="w-6 h-6 rounded-full border border-yellow-500/50 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 shadow-[0_0_10px_#eab308]" />
+          </div>
+        </motion.div>
+
+        {/* Modern Icons Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {modernIcons.map((icon, i) => (
             <motion.div 
-              key={i}
-              whileHover={{ scale: 1.02 }}
-              className="aspect-square rounded-[32px] overflow-hidden bg-[#2a2a2a] relative group"
+              key={i} 
+              variants={itemVariants}
+              className="flex flex-col text-left group"
             >
-              <img 
-                src={leader.img} 
-                alt="" 
-                className="w-full h-full object-cover" 
-              />
+              {/* Card */}
+              <div className="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-8 border border-white/5 bg-[#111]">
+                <img 
+                  src={icon.image} 
+                  alt={icon.name} 
+                  className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                />
+                
+                {/* Bottom Gradient Overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-8 pt-20 bg-gradient-to-t from-black via-black/40 to-transparent">
+                  <h3 className="font-sans text-white text-3xl font-bold mb-1 tracking-tight">
+                    {icon.name}
+                  </h3>
+                  <span className="font-sans text-[#86868B] text-sm font-medium tracking-wide">
+                    {icon.handle}
+                  </span>
+                </div>
+              </div>
+
+              {/* Description below card */}
+              <p className="font-sans text-[#86868B] text-[15px] leading-relaxed font-medium opacity-70 group-hover:opacity-100 transition-opacity">
+                {icon.description}
+              </p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </motion.div>
-
-      {/* Subtle Grain (Tighter opacity) */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 grain mix-blend-overlay" />
     </section>
   );
 }

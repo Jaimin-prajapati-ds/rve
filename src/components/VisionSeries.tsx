@@ -8,7 +8,7 @@ export default function VisionSeries() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as any } // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   };
 
@@ -54,7 +54,7 @@ export default function VisionSeries() {
            initial={{ opacity: 0, scale: 0.95 }}
            whileInView={{ opacity: 1, scale: 1 }}
            viewport={{ once: true }}
-           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as any }} // eslint-disable-line @typescript-eslint/no-explicit-any
            className="relative"
         >
           <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full translate-x-12 translate-y-12" />

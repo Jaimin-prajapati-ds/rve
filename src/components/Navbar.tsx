@@ -19,7 +19,7 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as any }}
         className="flex items-center gap-8 md:gap-14 px-10 py-0 h-[64px] rounded-[80px] border border-white/5 bg-white/[0.01] backdrop-blur-[10px] transition-all duration-500 shadow-2xl"
       >
         {/* Logo Tag */}
