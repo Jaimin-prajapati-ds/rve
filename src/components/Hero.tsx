@@ -49,7 +49,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen pt-48 pb-12 px-6 bg-black">
+    <section className="relative min-h-screen pt-32 pb-12 px-6 bg-black overflow-hidden">
       <motion.div 
         initial="hidden"
         animate="visible"
@@ -57,16 +57,16 @@ export default function Hero() {
         className="max-w-[1200px] mx-auto text-center"
       >
         {/* Label (Small centered text as per screenshot) */}
-        <motion.div variants={itemVariants} className="mb-14">
+        <motion.div variants={itemVariants} className="mb-10 sm:mb-14">
           <span className="font-sans text-[11px] tracking-[0.2em] text-[#86868B] font-bold uppercase opacity-40">
             [rve]
           </span>
         </motion.div>
 
-        {/* Main Title (96px md, 56px sm) */}
+        {/* Main Title (96px md, 40px sm - Accurate sizing) */}
         <motion.h1 
           variants={itemVariants}
-          className="font-sans text-[64px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[1] mb-12"
+          className="font-sans text-[40px] sm:text-[64px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[1.1] mb-8 px-4"
         >
           A premium <br /> content agency.
         </motion.h1>
@@ -74,13 +74,13 @@ export default function Hero() {
         {/* Subtitle (Small and clean) */}
         <motion.p 
           variants={itemVariants} 
-          className="font-sans text-[#86868B] text-base md:text-[18px] font-medium opacity-60 mb-20"
+          className="font-sans text-[#86868B] text-[15px] sm:text-base md:text-[18px] font-medium opacity-60 mb-16 sm:mb-20 px-6 max-w-[600px] mx-auto leading-relaxed"
         >
           Trusted by top thought leaders and global brands.
         </motion.p>
 
         {/* Modern Icons Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 sm:gap-12 px-4 sm:px-0">
           {modernIcons.map((icon, i) => (
             <motion.div 
               key={i} 
@@ -88,7 +88,7 @@ export default function Hero() {
               className="flex flex-col text-left group"
             >
               {/* Card */}
-              <div className="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-8 border border-white/5 bg-[#111]">
+              <div className="relative aspect-[3/4] sm:aspect-[4/5] rounded-[24px] sm:rounded-[32px] overflow-hidden mb-6 sm:mb-8 border border-white/5 bg-[#111]">
                 <img 
                   src={icon.image} 
                   alt={icon.name} 
@@ -96,18 +96,18 @@ export default function Hero() {
                 />
                 
                 {/* Bottom Gradient Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-8 pt-24 bg-gradient-to-t from-black via-black/60 to-transparent">
-                  <h3 className="font-sans text-white text-3xl font-bold mb-1 tracking-tight">
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 pt-24 bg-gradient-to-t from-black via-black/60 to-transparent">
+                  <h3 className="font-sans text-white text-2xl sm:text-3xl font-bold mb-1 tracking-tight">
                     {icon.name}
                   </h3>
-                  <span className="font-sans text-[#86868B] text-sm font-medium tracking-wide opacity-60">
+                  <span className="font-sans text-[#86868B] text-xs sm:text-sm font-medium tracking-wide opacity-60">
                     {icon.handle}
                   </span>
                 </div>
               </div>
 
               {/* Description below card */}
-              <p className="font-sans text-[#86868B] text-[15px] leading-relaxed font-medium opacity-60 group-hover:opacity-100 transition-opacity">
+              <p className="font-sans text-[#86868B] text-[14px] sm:text-[15px] leading-relaxed font-medium opacity-60 group-hover:opacity-100 transition-opacity">
                 {icon.description}
               </p>
             </motion.div>
