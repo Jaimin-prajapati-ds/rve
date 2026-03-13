@@ -1,8 +1,15 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
-const modernIcons = [
+interface IconProfile {
+  name: string;
+  handle: string;
+  description: string;
+  image: string;
+}
+
+const modernIcons: IconProfile[] = [
   {
     name: "Malcolm Gladwell",
     handle: "@malcolmgladwell",
@@ -18,33 +25,44 @@ const modernIcons = [
   {
     name: "Jesse Itzler",
     handle: "@jesseitzler",
-    description: "Serial entrepreneur, co-owner of Atlanta Hawks, NYT bestselling author",
+    description: "Serial entrepreneur, co-owner of Atlanta hawks, NYT bestselling author",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
 export default function Hero() {
-  const containerVariants = {
+  const title = "A premium content agency.";
+  
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
       transition: { 
         staggerChildren: 0.1, 
         delayChildren: 0.2, 
-        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+        ease: [0.22, 1, 0.36, 1] as any 
       }
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+        ease: [0.22, 1, 0.36, 1] as any
       }
+    }
+  };
+
+  const letterVariants: Variants = {
+    hidden: { y: "120%", opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as any }
     }
   };
 
@@ -56,22 +74,28 @@ export default function Hero() {
         variants={containerVariants}
         className="max-w-[1200px] mx-auto text-center"
       >
-        {/* Label (Small centered text as per screenshot) */}
+        {/* Label (Small centered text) */}
         <motion.div variants={itemVariants} className="mb-10 sm:mb-14">
           <span className="font-sans text-[11px] tracking-[0.2em] text-[#86868B] font-bold uppercase opacity-40">
             [rve]
           </span>
         </motion.div>
 
-        {/* Main Title (96px md, 40px sm - Accurate sizing) */}
-        <motion.h1 
-          variants={itemVariants}
-          className="font-sans text-[40px] sm:text-[64px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[1.1] mb-8 px-4"
-        >
-          A premium <br /> content agency.
-        </motion.h1>
+        {/* Main Title (Liquid Reveal) */}
+        <h1 className="font-sans text-[40px] sm:text-[64px] md:text-[96px] text-white font-bold tracking-[-0.04em] leading-[0.9] mb-8 px-4 flex flex-wrap justify-center overflow-hidden">
+          {title.split(" ").map((word, i) => (
+            <span key={i} className="inline-block mr-4 overflow-hidden py-2">
+              <motion.span
+                variants={letterVariants}
+                className="inline-block"
+              >
+                {word}
+              </motion.span>
+            </span>
+          ))}
+        </h1>
 
-        {/* Subtitle (Small and clean) */}
+        {/* Subtitle */}
         <motion.p 
           variants={itemVariants} 
           className="font-sans text-[#86868B] text-[15px] sm:text-base md:text-[18px] font-medium opacity-60 mb-16 sm:mb-20 px-6 max-w-[600px] mx-auto leading-relaxed"
@@ -86,13 +110,14 @@ export default function Hero() {
               key={i} 
               variants={itemVariants}
               className="flex flex-col text-left group"
+              data-cursor="See Profile"
             >
               {/* Card */}
-              <div className="relative aspect-[3/4] sm:aspect-[4/5] rounded-[24px] sm:rounded-[32px] overflow-hidden mb-6 sm:mb-8 border border-white/5 bg-[#111]">
+              <div className="relative aspect-[3/4] sm:aspect-[4/5] rounded-[24px] sm:rounded-[40px] overflow-hidden mb-6 sm:mb-8 border border-white/5 bg-[#111] transition-transform duration-700 group-hover:scale-[0.98]">
                 <img 
                   src={icon.image} 
                   alt={icon.name} 
-                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105" 
+                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110" 
                 />
                 
                 {/* Bottom Gradient Overlay */}

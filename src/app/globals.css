@@ -16,6 +16,9 @@
   --heading-spacing-tight: -0.04em;
   --body-size: 20px;
   --body-line-height: 1.2;
+
+  /* Luxury Easing */
+  --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
@@ -31,58 +34,73 @@
     color: var(--white);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   h1, h2, h3 {
     letter-spacing: var(--heading-spacing-tight);
-    line-height: 1;
+    line-height: 0.9;
   }
 }
 
-/* Custom Scrollbar (Synced) */
+/* Custom Scrollbar (Invisible for Lenis) */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 0px;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--black);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #222;
-  border-radius: 10px;
-}
-
-/* Container Widths from Reference */
-.container-narrow {
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.container-standard {
-  max-width: 920px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.container-wide {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Grain Noise Overlay */
+/* Animated Noise Texture */
 .grain::after {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -150%;
+  left: -150%;
+  width: 300%;
+  height: 300%;
   background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity: 0.03;
+  opacity: 0.05;
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: overlay;
+  animation: noise 2.s steps(4) infinite;
+}
+
+@keyframes noise {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-10%, 5%); }
+  30% { transform: translate(5%, -10%); }
+  40% { transform: translate(-5%, 15%); }
+  50% { transform: translate(-10%, 5%); }
+  60% { transform: translate(15%, 0); }
+  70% { transform: translate(0, 10%); }
+  80% { transform: translate(-15%, 0); }
+  90% { transform: translate(10%, 5%); }
+  100% { transform: translate(5%, 0); }
+}
+
+/* Liquid Reveal Base */
+.char {
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* Smooth Scroll Support */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
