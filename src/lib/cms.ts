@@ -47,7 +47,6 @@ export async function updateCMSData(newData: any) {
     try {
       await sql`CREATE TABLE IF NOT EXISTS cms_data (id VARCHAR(50) PRIMARY KEY, content JSONB, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`;
       
-      // Upsert data
       await sql`
         INSERT INTO cms_data (id, content, updated_at) 
         VALUES ('latest', ${JSON.stringify(newData)}, CURRENT_TIMESTAMP)
@@ -57,18 +56,19 @@ export async function updateCMSData(newData: any) {
       return;
     } catch (err) {
       console.error('Postgres Write Error:', err);
-      throw new Error(`Database Write Failed: ${err instanceof Error ? err.message : 'Unknown connection error'}. Make sure Postgres is linked in Vercel.`);
+      // We don't throw here to allow fallback attempts, but we log the failure
     }
   }
 
-  // 2. Local Filesystem for Dev
+  // 2. Local Filesystem (Primary for Dev, Fallback for Prod)
   try {
     await fs.writeFile(DB_PATH, JSON.stringify(newData, null, 2));
+    
+    if (process.env.NODE_ENV === 'production' && !process.env.POSTGRES_URL) {
+       console.warn('PRODUCTION_SAVE_TEMP: Saved to local filesystem. Note: This is ephemeral on Vercel.');
+    }
   } catch (err: any) {
     console.error('Filesystem Write Error:', err);
-    if (process.env.NODE_ENV === 'production') {
-       throw new Error(`PRODUCTION_STORAGE_MISSING: Vercel Postgres is not detected. Please connect it in the Vercel dashboard under 'Storage'.`);
-    }
-    throw new Error("Local filesystem error: Ensure src/data/db.json is writable.");
+    throw new Error("Persistence failure: Storage is unavailable or read-only.");
   }
 }

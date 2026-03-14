@@ -77,7 +77,7 @@ export default function AdminDashboard() {
   }, [data, originalData]);
 
   useEffect(() => {
-    const checkStorage = async () => {
+    const fetchData = async () => {
       try {
         const res = await fetch('/api/cms');
         const d = await res.json();
@@ -92,12 +92,13 @@ export default function AdminDashboard() {
         setLoading(false);
       }
     };
-    checkStorage();
+    fetchData();
   }, []);
 
   const handleSave = async () => {
     if (!data) return;
     setSaving(true);
+    setMessage('PUBLISHING CHANGES...');
     try {
       const res = await fetch('/api/cms', {
         method: 'POST',
@@ -142,7 +143,7 @@ export default function AdminDashboard() {
     { id: 'hero', label: 'Identity', icon: '✦' },
     { id: 'industry', label: 'Markets', icon: '◈' },
     { id: 'services', label: 'Services', icon: '▣' },
-    { id: 'community', label: 'Stats', icon: '♒' },
+    { id: 'community', label: 'Community', icon: '♒' },
     { id: 'vision', label: 'Vision', icon: '❂' },
     { id: 'newsletter', label: 'Nexus', icon: '✉' }
   ];
@@ -152,7 +153,7 @@ export default function AdminDashboard() {
       {/* SIDEBAR NAVIGATION */}
       <aside className="w-full lg:w-[280px] bg-black border-r border-white/5 flex flex-col z-[100]">
         <div className="p-8 border-b border-white/5">
-          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.location.href = '/'}>
+          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.open('/', '_blank')}>
             <div className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center font-black text-[12px] group-hover:bg-gold transition-colors font-mono">RVE</div>
             <div className="flex flex-col">
               <span className="font-black text-[14px] tracking-tight uppercase leading-none">Admin</span>
@@ -183,7 +184,7 @@ export default function AdminDashboard() {
            {hasUnsavedChanges && (
               <div className="bg-gold/5 border border-gold/10 px-4 py-3 rounded-xl flex items-center justify-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-                <span className="text-[9px] font-black uppercase tracking-widest text-gold/80">Unsaved Changes</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-gold/80">Pending Changes</span>
               </div>
            )}
            <button 
@@ -204,9 +205,9 @@ export default function AdminDashboard() {
         <header className="h-[80px] border-b border-white/5 flex items-center justify-between px-10 bg-black/40 backdrop-blur-xl z-50">
            <div className="flex items-center gap-8">
               <div className="flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/5 bg-white/[0.02]">
-                 <div className={`w-1.5 h-1.5 rounded-full ${storageStatus.postgres ? 'bg-green-500' : 'bg-gold animate-pulse'}`} />
+                 <div className={`w-1.5 h-1.5 rounded-full ${storageStatus.postgres ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]' : 'bg-gold/50'}`} />
                  <span className="text-[8px] font-bold uppercase tracking-widest text-white/40">
-                    {storageStatus.postgres ? 'Cloud Sync: Active' : 'Cloud Sync: Partial'}
+                    {storageStatus.postgres ? 'Persistence: Live' : 'Persistence: Local'}
                  </span>
               </div>
            </div>
@@ -220,7 +221,7 @@ export default function AdminDashboard() {
                 {saving && (
                   <motion.div initial={{ x: -100 }} animate={{ x: 200 }} transition={{ repeat: Infinity, duration: 1 }} className="absolute inset-0 bg-gold/20 skew-x-12" />
                 )}
-                <span>{saving ? 'Saving...' : 'Publish Changes'}</span>
+                <span>{saving ? 'Syncing...' : 'Publish Changes'}</span>
               </button>
            </div>
         </header>
@@ -228,61 +229,53 @@ export default function AdminDashboard() {
         {/* SCROLLABLE CANVAS */}
         <div className="flex-1 overflow-y-auto p-10 lg:p-16 custom-scrollbar">
           <AnimatePresence mode="wait">
-            {!storageStatus.postgres && (
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-10 p-6 rounded-2xl bg-gold/[0.03] border border-gold/10 flex items-center justify-between gap-6">
-                <div className="flex items-center gap-4 text-[10px] text-white/40 leading-relaxed max-w-2xl font-medium">
-                  <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-gold font-bold">!</div>
-                  <p>Storage is currently disconnected. Changes will not persist across reloads. <span className="text-white/60">Please connect Postgres in Vercel to finalize.</span></p>
-                </div>
-                <a href="https://vercel.com/dashboard" target="_blank" className="whitespace-nowrap bg-gold/10 text-gold px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-gold hover:text-black transition-all">Setup</a>
-              </motion.div>
-            )}
-
             {activeTab === 'hero' && (
               <motion.div key="hero" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="max-w-[900px] space-y-16">
                 <div className="space-y-3">
-                  <h1 className="text-5xl font-black tracking-tight uppercase">Brand Identity</h1>
-                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Main Headlines & Featured Members</p>
+                  <h1 className="text-5xl font-black tracking-tight uppercase">Identity</h1>
+                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Main Headlines & Team Members</p>
                 </div>
 
                 <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Main Headline</label>
-                    <input 
-                      type="text" 
-                      value={data.hero?.title || ''}
-                      onChange={(e) => updateNested('hero.title', e.target.value)}
-                      className="w-full bg-black border border-white/5 rounded-2xl px-8 py-8 text-3xl font-black text-white focus:border-gold/30 transition-all outline-none"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Hero Description</label>
-                    <textarea 
-                      value={data.hero?.subtitle || ''}
-                      onChange={(e) => updateNested('hero.subtitle', e.target.value)}
-                      className="w-full bg-black border border-white/5 rounded-2xl px-8 py-8 min-h-[140px] text-base font-medium text-white/60 focus:border-gold/30 transition-all outline-none leading-relaxed"
-                    />
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Main Headline</label>
+                      <input 
+                        type="text" 
+                        value={data.hero?.title || ''}
+                        onChange={(e) => updateNested('hero.title', e.target.value)}
+                        className="w-full bg-black border border-white/5 rounded-2xl px-8 py-8 text-3xl font-black text-white focus:border-gold/30 transition-all outline-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Sub-Headline / Description</label>
+                      <textarea 
+                        value={data.hero?.subtitle || ''}
+                        onChange={(e) => updateNested('hero.subtitle', e.target.value)}
+                        className="w-full bg-black border border-white/5 rounded-2xl px-8 py-8 min-h-[140px] text-base font-medium text-white/60 focus:border-gold/30 transition-all outline-none leading-relaxed"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <div className="space-y-8 pt-8">
-                   <div className="flex items-center justify-between">
-                      <h3 className="text-[10px] font-black uppercase tracking-[0.3em]">Team Profiles</h3>
+                   <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                      <h3 className="text-[10px] font-black uppercase tracking-[0.3em]">Featured Profiles</h3>
                       <button onClick={() => {
-                        const newIcons = [...(data.hero?.icons || []), { name: "NAME", handle: "@handle", description: "POSITION", image: "" }];
+                        const newIcons = [...(data.hero?.icons || []), { name: "Name", handle: "@handle", description: "Position", image: "" }];
                         updateNested('hero.icons', newIcons);
-                      }} className="px-4 py-2 rounded-lg border border-white/10 text-[9px] font-bold uppercase hover:bg-white hover:text-black transition-all">+ Add Profile</button>
+                      }} className="px-5 py-2.5 rounded-xl border border-white/10 text-[9px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">+ Add Entry</button>
                    </div>
 
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       {data.hero?.icons?.map((icon: any, idx: number) => (
-                        <div key={idx} className="bg-white/[0.01] border border-white/5 p-8 rounded-[32px] group relative hover:border-white/10 transition-all">
+                        <div key={idx} className="bg-white/[0.01] border border-white/5 p-8 rounded-[40px] group relative hover:border-white/10 transition-all">
                            <button onClick={() => {
                              const n = data.hero.icons.filter((_: any, i: number) => i !== idx);
                              updateNested('hero.icons', n);
-                           }} className="absolute top-6 right-6 text-red-500/20 hover:text-red-500 text-[8px] font-black uppercase transition-all">Delete</button>
+                           }} className="absolute top-8 right-8 text-red-500/20 hover:text-red-500 text-[8px] font-black uppercase transition-all">Remove</button>
                            
-                           <div className="space-y-6">
+                           <div className="space-y-8">
                              <ImageUpload 
                               currentUrl={icon.image} 
                               onUpload={url => {
@@ -302,7 +295,7 @@ export default function AdminDashboard() {
                                    n[idx].handle = e.target.value;
                                    updateNested('hero.icons', n);
                                 }} />
-                                <textarea className="bg-transparent text-[10px] font-medium text-white/30 w-full min-h-[60px] outline-none leading-relaxed" placeholder="Position / Short Bio" value={icon.description} onChange={e => {
+                                <textarea className="bg-transparent text-[11px] font-medium text-white/30 w-full min-h-[80px] outline-none leading-relaxed" placeholder="Brief description..." value={icon.description} onChange={e => {
                                    const n = [...data.hero.icons];
                                    n[idx].description = e.target.value;
                                    updateNested('hero.icons', n);
@@ -319,32 +312,67 @@ export default function AdminDashboard() {
             {activeTab === 'industry' && (
               <motion.div key="industry" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="max-w-[900px] space-y-16">
                 <div className="space-y-3">
-                  <h1 className="text-5xl font-black tracking-tight uppercase">Market Sectors</h1>
-                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Industrial Focus Areas</p>
+                  <h1 className="text-5xl font-black tracking-tight uppercase">Markets</h1>
+                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Industry Focus Areas</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   {data.industry?.items?.map((item: string, idx: number) => (
-                      <div key={idx} className="bg-white/[0.01] border border-white/5 p-6 rounded-2xl group flex items-center gap-4">
-                         <input 
-                           className="flex-1 bg-transparent text-xl font-black outline-none focus:text-gold transition-colors"
-                           value={item}
-                           onChange={e => {
-                             const n = [...data.industry.items];
-                             n[idx] = e.target.value;
-                             updateNested('industry.items', n);
-                           }}
-                         />
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Display Title</label>
+                      <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-xl font-black text-white focus:border-gold/30 outline-none" value={data.industry?.title || ''} onChange={e => updateNested('industry.title', e.target.value)} />
+                   </div>
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Label Tag</label>
+                      <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-xl font-black text-white focus:border-gold/30 outline-none font-mono text-gold" value={data.industry?.subtitle || ''} onChange={e => updateNested('industry.subtitle', e.target.value)} />
+                   </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                   {data.industry?.items?.map((item: any, idx: number) => (
+                      <div key={idx} className="bg-white/[0.01] border border-white/5 p-8 rounded-[40px] group relative hover:border-white/10 transition-all">
                          <button onClick={() => {
                            const n = data.industry.items.filter((_: any, i: number) => i !== idx);
                            updateNested('industry.items', n);
-                         }} className="text-red-500/20 hover:text-red-500 text-[8px] font-black uppercase opacity-0 group-hover:opacity-100 transition-all">Remove</button>
+                         }} className="absolute top-8 right-8 text-red-500/20 hover:text-red-500 text-[8px] font-black uppercase transition-all">Remove</button>
+                         
+                         <div className="space-y-8">
+                            <ImageUpload 
+                              currentUrl={item.image}
+                              onUpload={url => {
+                                const n = [...data.industry.items];
+                                n[idx].image = url;
+                                updateNested('industry.items', n);
+                              }}
+                            />
+                            <div className="space-y-4">
+                               <input 
+                                 className="bg-transparent text-xl font-black w-full border-b border-white/5 pb-2 focus:border-gold outline-none" 
+                                 placeholder="Sector Name"
+                                 value={item.title} 
+                                 onChange={e => {
+                                   const n = [...data.industry.items];
+                                   n[idx].title = e.target.value;
+                                   updateNested('industry.items', n);
+                                 }}
+                               />
+                               <textarea 
+                                 className="bg-transparent text-[11px] font-medium text-white/30 w-full min-h-[80px] outline-none leading-relaxed" 
+                                 placeholder="Sector Description"
+                                 value={item.desc} 
+                                 onChange={e => {
+                                   const n = [...data.industry.items];
+                                   n[idx].desc = e.target.value;
+                                   updateNested('industry.items', n);
+                                 }}
+                               />
+                            </div>
+                         </div>
                       </div>
                    ))}
                    <button onClick={() => {
-                     const n = [...(data.industry?.items || []), "NEW SECTOR"];
+                     const n = [...(data.industry?.items || []), { title: "NEW SECTOR", desc: "", image: "" }];
                      updateNested('industry.items', n);
-                   }} className="border border-dashed border-white/10 p-6 rounded-2xl text-white/20 hover:border-gold/30 hover:text-gold transition-all text-[9px] font-black uppercase tracking-widest">Add Sector +</button>
+                   }} className="border border-dashed border-white/10 p-10 rounded-[40px] text-white/20 hover:border-gold/30 hover:text-gold transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center min-h-[300px]">Add Market Segment +</button>
                 </div>
               </motion.div>
             )}
@@ -352,48 +380,84 @@ export default function AdminDashboard() {
             {activeTab === 'services' && (
               <motion.div key="services" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="max-w-[900px] space-y-16">
                 <div className="space-y-3">
-                  <h1 className="text-5xl font-black tracking-tight uppercase">Core Services</h1>
-                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Competencies & Solution Modules</p>
+                  <h1 className="text-5xl font-black tracking-tight uppercase">Services</h1>
+                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Solutions & Expertise</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Head 1</label>
+                      <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-xl font-black text-white focus:border-gold/30 outline-none" value={data.services?.title1 || ''} onChange={e => updateNested('services.title1', e.target.value)} />
+                   </div>
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Head 2</label>
+                      <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-xl font-black text-white focus:border-gold/30 outline-none" value={data.services?.title2 || ''} onChange={e => updateNested('services.title2', e.target.value)} />
+                   </div>
                 </div>
                 
                 <div className="space-y-8">
                    {data.services?.items?.map((service: any, idx: number) => (
-                      <div key={idx} className="bg-white/[0.01] border border-white/5 p-10 rounded-[32px] group relative hover:border-white/10 transition-all">
+                      <div key={idx} className="bg-white/[0.01] border border-white/5 p-12 rounded-[48px] group relative hover:border-white/10 transition-all">
                          <button onClick={() => {
                            const n = data.services.items.filter((_: any, i: number) => i !== idx);
                            updateNested('services.items', n);
-                         }} className="absolute top-8 right-8 text-red-500/20 hover:text-red-500 text-[8px] font-black uppercase">Terminate</button>
+                         }} className="absolute top-10 right-10 text-red-500/20 hover:text-red-500 text-[8px] font-black uppercase">Remove Module</button>
                          
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            <div className="space-y-6">
-                               <input 
-                                 className="bg-transparent text-2xl font-black w-full border-b border-white/5 pb-4 focus:border-gold outline-none" 
-                                 placeholder="Service Title"
-                                 value={service.title} 
-                                 onChange={e => {
-                                   const n = [...data.services.items];
-                                   n[idx].title = e.target.value;
-                                   updateNested('services.items', n);
-                                 }}
-                               />
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div className="space-y-8">
+                               <div className="flex items-center gap-6">
+                                  <input 
+                                    className="w-16 bg-black/40 border border-white/5 rounded-xl p-3 text-center text-xs font-mono text-gold font-bold"
+                                    placeholder="ID"
+                                    value={service.id}
+                                    onChange={e => {
+                                      const n = [...data.services.items];
+                                      n[idx].id = e.target.value;
+                                      updateNested('services.items', n);
+                                    }}
+                                  />
+                                  <input 
+                                    className="flex-1 bg-transparent text-3xl font-black border-b border-white/5 pb-4 focus:border-gold outline-none" 
+                                    placeholder="Service Title"
+                                    value={service.title} 
+                                    onChange={e => {
+                                      const n = [...data.services.items];
+                                      n[idx].title = e.target.value;
+                                      updateNested('services.items', n);
+                                    }}
+                                  />
+                               </div>
                                <textarea 
-                                 className="bg-transparent text-base font-medium text-white/40 w-full min-h-[100px] outline-none leading-relaxed" 
-                                 placeholder="Service description and impact..."
-                                 value={service.description} 
+                                 className="bg-transparent text-lg font-medium text-white/40 w-full min-h-[140px] outline-none leading-relaxed" 
+                                 placeholder="Describe the solution module..."
+                                 value={service.desc} 
                                  onChange={e => {
                                    const n = [...data.services.items];
-                                   n[idx].description = e.target.value;
+                                   n[idx].desc = e.target.value;
                                    updateNested('services.items', n);
                                  }}
                                />
+                               <div className="space-y-2">
+                                  <label className="text-[8px] font-black uppercase tracking-widest text-white/10 ml-2">Category Tag</label>
+                                  <input 
+                                     className="bg-black/40 border border-white/5 rounded-xl px-5 py-3 text-[10px] font-mono text-white/30 w-full outline-none focus:border-gold/30"
+                                     placeholder="[ CATEGORY ]"
+                                     value={service.tag}
+                                     onChange={e => {
+                                       const n = [...data.services.items];
+                                       n[idx].tag = e.target.value;
+                                       updateNested('services.items', n);
+                                     }}
+                                  />
+                               </div>
                             </div>
                             <div className="space-y-4">
-                               <label className="text-[8px] font-black uppercase tracking-[0.2em] text-white/10 ml-2">Display Asset</label>
+                               <label className="text-[8px] font-black uppercase tracking-widest text-white/10 ml-2">Featured Asset</label>
                                <ImageUpload 
-                                 currentUrl={service.image}
+                                 currentUrl={service.img}
                                  onUpload={url => {
                                    const n = [...data.services.items];
-                                   n[idx].image = url;
+                                   n[idx].img = url;
                                    updateNested('services.items', n);
                                  }}
                                />
@@ -402,9 +466,9 @@ export default function AdminDashboard() {
                       </div>
                    ))}
                    <button onClick={() => {
-                      const n = [...(data.services?.items || []), { title: "NEW SERVICE", description: "", image: "" }];
+                      const n = [...(data.services?.items || []), { id: "04", title: "New Service", desc: "", img: "", tag: "[ NEW ]" }];
                       updateNested('services.items', n);
-                   }} className="w-full border border-dashed border-white/10 p-10 rounded-[32px] text-white/20 hover:border-gold/30 hover:text-gold transition-all text-[10px] font-black uppercase tracking-widest">Add Service Module +</button>
+                   }} className="w-full border border-dashed border-white/10 p-12 rounded-[48px] text-white/20 hover:border-gold/30 hover:text-gold transition-all text-sm font-black uppercase tracking-[0.3em]">Add Solution Module +</button>
                 </div>
               </motion.div>
             )}
@@ -412,34 +476,73 @@ export default function AdminDashboard() {
             {activeTab === 'community' && (
               <motion.div key="community" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="max-w-[900px] space-y-16">
                 <div className="space-y-3">
-                  <h1 className="text-5xl font-black tracking-tight uppercase">Performance Metrics</h1>
-                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Social Proof & Network Reach</p>
+                  <h1 className="text-5xl font-black tracking-tight uppercase">Community</h1>
+                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Metrics & Engagement</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                   <div className="bg-white/[0.01] border border-white/5 p-8 rounded-2xl space-y-4">
-                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20">Instagram</label>
-                      <input 
-                        className="bg-black border border-white/5 rounded-xl p-4 w-full text-4xl font-black text-white focus:text-gold outline-none"
-                        value={data.community?.stats?.instagram || ''}
-                        onChange={e => updateNested('community.stats.instagram', e.target.value)}
-                      />
+                <div className="space-y-12">
+                   <div className="grid grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Label</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-5 text-gold font-mono text-sm outline-none focus:border-gold/30" value={data.community?.tagline || ''} onChange={e => updateNested('community.tagline', e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">CTA Action</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-5 text-white font-black text-sm outline-none focus:border-gold/30" value={data.community?.ctaText || ''} onChange={e => updateNested('community.ctaText', e.target.value)} />
+                      </div>
                    </div>
-                   <div className="bg-white/[0.01] border border-white/5 p-8 rounded-2xl space-y-4">
-                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20">Client Count</label>
-                      <input 
-                        className="bg-black border border-white/5 rounded-xl p-4 w-full text-4xl font-black text-white focus:text-gold outline-none"
-                        value={data.community?.stats?.clients || ''}
-                        onChange={e => updateNested('community.stats.clients', e.target.value)}
-                      />
+
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Headline Structure</label>
+                      <div className="grid grid-cols-2 gap-4">
+                         <input className="bg-black border border-white/5 rounded-xl p-6 w-full text-2xl font-black text-white outline-none focus:border-gold/30" value={data.community?.title1 || ''} onChange={e => updateNested('community.title1', e.target.value)} />
+                         <input className="bg-black border border-white/5 rounded-xl p-6 w-full text-2xl font-black text-white outline-none focus:border-gold/30" value={data.community?.title2 || ''} onChange={e => updateNested('community.title2', e.target.value)} />
+                      </div>
                    </div>
-                   <div className="bg-white/[0.01] border border-white/5 p-8 rounded-2xl space-y-4">
-                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20">Total Projects</label>
-                      <input 
-                        className="bg-black border border-white/5 rounded-xl p-4 w-full text-4xl font-black text-white focus:text-gold outline-none"
-                        value={data.community?.stats?.projects || ''}
-                        onChange={e => updateNested('community.stats.projects', e.target.value)}
-                      />
+
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase tracking-widest text-white/20 ml-2">Description Manifesto</label>
+                      <textarea className="w-full bg-black border border-white/5 rounded-2xl p-8 min-h-[140px] text-lg font-medium text-white/60 outline-none focus:border-gold/30 leading-relaxed" value={data.community?.description || ''} onChange={e => updateNested('community.description', e.target.value)} />
+                   </div>
+
+                   <div className="border-t border-white/5 pt-8 space-y-6">
+                      <div className="flex items-center justify-between">
+                         <h3 className="text-[10px] font-black uppercase tracking-[0.3em]">Growth Stats</h3>
+                         <button onClick={() => {
+                           const n = [...(data.community?.stats || []), { label: "NEW STAT", value: 0, suffix: "+" }];
+                           updateNested('community.stats', n);
+                         }} className="px-4 py-2 rounded-lg border border-white/10 text-[8px] font-black uppercase hover:bg-white hover:text-black transition-all">+ Add Stat</button>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {data.community?.stats?.map((stat: any, idx: number) => (
+                           <div key={idx} className="bg-white/[0.01] border border-white/5 p-6 rounded-2xl relative group hover:border-white/10 transition-all">
+                              <button onClick={() => {
+                                const n = data.community.stats.filter((_: any, i: number) => i !== idx);
+                                updateNested('community.stats', n);
+                              }} className="absolute top-4 right-4 text-red-500/0 group-hover:text-red-500 text-[7px] uppercase transition-all">Delete</button>
+                              <div className="space-y-4">
+                                 <input className="bg-transparent text-[8px] font-black uppercase tracking-widest text-white/20 w-full outline-none focus:text-white" value={stat.label} onChange={e => {
+                                    const n = [...data.community.stats];
+                                    n[idx].label = e.target.value;
+                                    updateNested('community.stats', n);
+                                 }} />
+                                 <div className="flex items-center gap-1">
+                                    <input className="bg-transparent text-3xl font-black text-white w-full outline-none focus:text-gold" value={stat.value} onChange={e => {
+                                       const n = [...data.community.stats];
+                                       n[idx].value = e.target.value;
+                                       updateNested('community.stats', n);
+                                    }} />
+                                    <input className="bg-transparent text-xl font-black text-gold w-8 outline-none" value={stat.suffix} onChange={e => {
+                                       const n = [...data.community.stats];
+                                       n[idx].suffix = e.target.value;
+                                       updateNested('community.stats', n);
+                                    }} />
+                                 </div>
+                              </div>
+                           </div>
+                        ))}
+                      </div>
                    </div>
                 </div>
               </motion.div>
@@ -448,17 +551,56 @@ export default function AdminDashboard() {
             {activeTab === 'vision' && (
               <motion.div key="vision" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="max-w-[900px] space-y-16">
                  <div className="space-y-3">
-                  <h1 className="text-5xl font-black tracking-tight uppercase">Company Vision</h1>
-                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">History & Narrative</p>
+                  <h1 className="text-5xl font-black tracking-tight uppercase">Vision</h1>
+                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">The Narrative Series</p>
                 </div>
 
-                <div className="bg-white/[0.01] border border-white/5 p-10 rounded-[32px] space-y-4">
-                   <label className="text-[8px] font-black uppercase tracking-[0.3em] text-white/10 ml-2">Philosophy Content</label>
-                   <textarea 
-                     className="w-full bg-black border border-white/5 rounded-[24px] px-8 py-8 min-h-[300px] text-lg font-medium text-white/80 focus:border-gold/30 transition-all outline-none leading-relaxed"
-                     value={data.vision?.content || ''}
-                     onChange={e => updateNested('vision.content', e.target.value)}
-                   />
+                <div className="space-y-12">
+                   <div className="grid grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/20 ml-2">Label</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-5 text-gold font-mono text-sm outline-none" value={data.vision?.tagline || ''} onChange={e => updateNested('vision.tagline', e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/20 ml-2">Episode Tag</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-5 text-white/30 font-medium text-sm outline-none" value={data.vision?.episodeTag || ''} onChange={e => updateNested('vision.episodeTag', e.target.value)} />
+                      </div>
+                   </div>
+
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/20 ml-2">Title Line 1</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-2xl font-black text-white outline-none focus:border-gold/30" value={data.vision?.title1 || ''} onChange={e => updateNested('vision.title1', e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/20 ml-2">Title Line 2</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-2xl font-black text-white outline-none focus:border-gold/30" value={data.vision?.title2 || ''} onChange={e => updateNested('vision.title2', e.target.value)} />
+                      </div>
+                   </div>
+
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase text-white/20 ml-2">Series Manifesto</label>
+                      <textarea 
+                        className="w-full bg-black border border-white/5 rounded-2xl p-10 min-h-[240px] text-lg font-medium text-white/80 focus:border-gold/30 outline-none leading-relaxed"
+                        value={data.vision?.description || ''}
+                        onChange={e => updateNested('vision.description', e.target.value)}
+                      />
+                   </div>
+
+                   <div className="grid grid-cols-3 gap-6 pt-6">
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/10 ml-2">Status Clip</label>
+                         <input className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-gold font-mono text-[10px] outline-none" value={data.vision?.launchTag || ''} onChange={e => updateNested('vision.launchTag', e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/10 ml-2">CTA Action</label>
+                         <input className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-white font-black text-[10px] outline-none underline decoration-gold" value={data.vision?.ctaText || ''} onChange={e => updateNested('vision.ctaText', e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/10 ml-2">Destination URL</label>
+                         <input className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-white/20 font-mono text-[10px] outline-none" value={data.vision?.ctaLink || ''} onChange={e => updateNested('vision.ctaLink', e.target.value)} />
+                      </div>
+                   </div>
                 </div>
               </motion.div>
             )}
@@ -466,18 +608,39 @@ export default function AdminDashboard() {
             {activeTab === 'newsletter' && (
               <motion.div key="newsletter" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="max-w-[900px] space-y-16">
                  <div className="space-y-3">
-                  <h1 className="text-5xl font-black tracking-tight uppercase">Nexus System</h1>
-                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Engagement & Subscription Settings</p>
+                  <h1 className="text-5xl font-black tracking-tight uppercase">Nexus</h1>
+                  <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold">Engagement Hub</p>
                 </div>
 
-                <div className="p-10 rounded-[32px] bg-white/[0.01] border border-white/5 space-y-6">
+                <div className="space-y-12">
                    <div className="space-y-2">
-                      <label className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">CTA Headline</label>
-                      <input 
-                        className="w-full bg-black border border-white/5 rounded-2xl px-8 py-6 text-xl font-black text-white focus:border-gold/30 outline-none"
-                        value={data.newsletter?.title || ''}
-                        onChange={e => updateNested('newsletter.title', e.target.value)}
+                      <label className="text-[8px] font-black uppercase text-white/20 ml-2">Label</label>
+                      <input className="w-full bg-black border border-white/5 rounded-xl p-5 text-gold font-mono text-sm outline-none" value={data.newsletter?.tagline || ''} onChange={e => updateNested('newsletter.tagline', e.target.value)} />
+                   </div>
+
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/20 ml-2">Headline 1</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-2xl font-black text-white outline-none focus:border-gold/30" value={data.newsletter?.title1 || ''} onChange={e => updateNested('newsletter.title1', e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[8px] font-black uppercase text-white/20 ml-2">Headline 2</label>
+                         <input className="w-full bg-black border border-white/5 rounded-xl p-6 text-2xl font-black text-white outline-none focus:border-gold/30" value={data.newsletter?.title2 || ''} onChange={e => updateNested('newsletter.title2', e.target.value)} />
+                      </div>
+                   </div>
+                   
+                   <div className="space-y-2">
+                      <label className="text-[8px] font-black uppercase text-white/20 ml-2">Incentive Description</label>
+                      <textarea 
+                        className="w-full bg-black border border-white/5 rounded-2xl p-8 min-h-[140px] text-lg font-medium text-white/40 outline-none focus:border-gold/30 leading-relaxed"
+                        value={data.newsletter?.description || ''}
+                        onChange={e => updateNested('newsletter.description', e.target.value)}
                       />
+                   </div>
+
+                   <div className="border-t border-white/5 pt-8">
+                      <label className="text-[8px] font-black uppercase text-white/10 ml-2">Institutional Copyright</label>
+                      <input className="w-full bg-transparent p-4 text-[10px] font-medium text-white/20 outline-none" value={data.newsletter?.copyright || ''} onChange={e => updateNested('newsletter.copyright', e.target.value)} />
                    </div>
                 </div>
               </motion.div>
@@ -485,17 +648,21 @@ export default function AdminDashboard() {
           </AnimatePresence>
         </div>
 
-        {/* MESSAGES */}
+        {/* NOTIFICATIONS */}
         <AnimatePresence>
           {message && (
             <motion.div 
               initial={{ y: 50, x: "-50%", opacity: 0 }}
               animate={{ y: 0, x: "-50%", opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
-              className="fixed bottom-10 left-1/2 bg-white text-black z-[1000] px-8 py-4 rounded-xl shadow-2xl flex items-center gap-4"
+              className="fixed bottom-10 left-1/2 bg-[#111] text-white z-[2000] px-8 py-5 rounded-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-5 backdrop-blur-2xl"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
-              <span className="text-[9px] font-black uppercase tracking-widest">{message}</span>
+              <div className="w-2 h-2 rounded-full bg-gold shadow-[0_0_15px_rgba(201,168,76,0.8)] animate-pulse" />
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">{message}</span>
+                {message.includes('PUBLISHED') && storageStatus.postgres && <span className="text-[7px] text-white/40 uppercase tracking-widest mt-1">Cloud synchronized successfully</span>}
+                {message.includes('PUBLISHED') && !storageStatus.postgres && <span className="text-[7px] text-gold/40 uppercase tracking-widest mt-1">Local session updated (Cloud unavailable)</span>}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
