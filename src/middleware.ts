@@ -3,15 +3,19 @@ import { NextResponse, NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect /admin routes (except login)
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+  // Protect /admin routes (except /admin/login)
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
     const session = request.cookies.get('admin_session');
     const secret = process.env.ADMIN_SESSION_SECRET;
 
-    // CRITICAL: If no secret is set in env, we must NOT fall back to a simple string
-    // This ensures production remains locked if env vars are missing
-    if (!session || !secret || session.value !== secret) {
+    // Hardened Security: If secret is missing or session doesn't match, redirect to login
+    // This prevents access if the environment variable is accidentally removed
+    const isAuthenticated = session && secret && session.value === secret;
+
+    if (!isAuthenticated) {
       const loginUrl = new URL('/admin/login', request.url);
+      // Optional: Add the current path as a return URL
+      loginUrl.searchParams.set('from', pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
