@@ -8,13 +8,18 @@ export function middleware(request: NextRequest) {
     const session = request.cookies.get('admin_session');
     const secret = process.env.ADMIN_SESSION_SECRET;
 
-    // Hardened Security: If secret is missing or session doesn't match, redirect to login
-    // This prevents access if the environment variable is accidentally removed
-    const isAuthenticated = session && secret && session.value === secret;
+    // Hardened Security: If secret is missing, DENY access immediately.
+    // This prevents "direct" open if the environment variables are not loaded.
+    if (!secret) {
+      console.warn('SECURITY_ALERT: ADMIN_SESSION_SECRET is missing. Access denied.');
+      const loginUrl = new URL('/admin/login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    const isAuthenticated = session && session.value === secret;
 
     if (!isAuthenticated) {
       const loginUrl = new URL('/admin/login', request.url);
-      // Optional: Add the current path as a return URL
       loginUrl.searchParams.set('from', pathname);
       return NextResponse.redirect(loginUrl);
     }
