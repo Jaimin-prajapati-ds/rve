@@ -12,14 +12,18 @@ interface IconProfile {
 
 export default function Hero() {
   const [content, setContent] = useState<any>(null);
+  const [globalContent, setGlobalContent] = useState<any>(null);
 
   useEffect(() => {
     fetch('/api/cms')
       .then(res => res.json())
-      .then(data => setContent(data.hero));
+      .then(data => {
+        setContent(data.hero);
+        setGlobalContent(data.global);
+      });
   }, []);
 
-  if (!content) return <div className="min-h-screen bg-black" />;
+  if (!content || !globalContent) return <div className="min-h-screen bg-black" />;
 
   const title = content.title;
   
@@ -66,7 +70,7 @@ export default function Hero() {
       >
         <motion.div variants={itemVariants} className="mb-8 sx:mb-12">
           <span className="font-sans text-[11px] tracking-[0.2em] text-[#86868B] font-bold uppercase opacity-40">
-            [rve]
+            {globalContent.nav.logo}
           </span>
         </motion.div>
 

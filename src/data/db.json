@@ -1,4 +1,24 @@
 {
+  "global": {
+    "nav": {
+      "logo": "[rve]",
+      "links": [
+        { "label": "Services", "href": "#services" },
+        { "label": "Community", "href": "#community" },
+        { "label": "Vision", "href": "#vision" }
+      ]
+    },
+    "intro": {
+      "logo": "rve",
+      "subtitle": "Premium Content Agency",
+      "duration": 2200
+    },
+    "seo": {
+      "title": "RVE Studios | Visionary Content Agency",
+      "description": "Premium content strategy and production for modern icons and global brands.",
+      "ogImage": "https://rvestudios.vercel.app/og-image.jpg"
+    }
+  },
   "hero": {
     "title": "Verified Headline",
     "subtitle": "Trusted by top thought leaders and global brands.",
