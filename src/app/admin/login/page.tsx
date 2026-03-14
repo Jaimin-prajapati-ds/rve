@@ -33,10 +33,10 @@ export default function AdminLogin() {
         className="w-full max-w-md bg-[#111] border border-white/10 rounded-[40px] p-10 shadow-2xl"
       >
         <div className="text-center mb-10">
-          <span className="font-sans text-[11px] tracking-[0.4em] text-gold uppercase font-bold mb-4 block">
-            [ Admin Access ]
+          <span className="font-sans text-[10px] tracking-[0.5em] text-gold uppercase font-bold mb-4 block">
+            Security Gateway
           </span>
-          <h1 className="text-3xl font-bold text-white tracking-tight text-center">RVE Dashboard</h1>
+          <h1 className="text-3xl font-black text-white tracking-tight text-center uppercase">RVE Studios</h1>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
