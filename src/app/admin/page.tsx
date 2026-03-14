@@ -68,6 +68,7 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState('');
   const [activeTab, setActiveTab] = useState('hero');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [storageStatus, setStorageStatus] = useState<{postgres: boolean, blob: boolean}>({postgres: true, blob: true});
 
   useEffect(() => {
     if (data && originalData) {
@@ -76,17 +77,25 @@ export default function AdminDashboard() {
   }, [data, originalData]);
 
   useEffect(() => {
-    fetch('/api/cms')
-      .then(res => res.json())
-      .then(d => {
+    const checkStorage = async () => {
+      try {
+        const res = await fetch('/api/cms');
+        const d = await res.json();
+        
+        if (d.error?.includes('PRODUCTION_STORAGE_MISSING')) {
+           setStorageStatus(prev => ({...prev, postgres: false}));
+        }
+
         setData(JSON.parse(JSON.stringify(d)));
         setOriginalData(JSON.parse(JSON.stringify(d)));
-        setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
         console.error('Fetch error:', err);
         setMessage('ERROR FETCHING CMS DATA');
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkStorage();
   }, []);
 
   const handleSave = async () => {
@@ -156,6 +165,37 @@ export default function AdminDashboard() {
 
   return (
     <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-gold selection:text-black">
+      {/* STORAGE LINKAGE GUIDE (Vercel Prod Only) */}
+      <AnimatePresence>
+        {!storageStatus.postgres && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            className="bg-gold/10 border-b border-gold/20 overflow-hidden"
+          >
+            <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="space-y-1 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 text-gold font-bold uppercase tracking-widest text-[10px]">
+                  <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                  Cloud Database Required
+                </div>
+                <p className="text-[#86868B] text-[10px] leading-relaxed max-w-xl">
+                  Bhai, your changes are temporary until you connect Vercel Postgres. 
+                  Go to **Vercel Dashboard** → **Storage** → **Connect Postgres**. 
+                  Image uploads will use Base64 fallback in the meantime.
+                </p>
+              </div>
+              <a 
+                href="https://vercel.com/dashboard" 
+                target="_blank" 
+                className="bg-gold text-black px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
+              >
+                Go to Vercel Dashboard
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Save Bar */}
       <div className="sticky top-0 z-50 bg-black/60 backdrop-blur-3xl border-b border-white/5 py-3 px-6 md:px-12 flex justify-between items-center shadow-2xl transition-all duration-500">
         <div className="flex items-center gap-6">

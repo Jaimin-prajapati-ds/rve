@@ -20,10 +20,17 @@ export async function getCMSData() {
     }
   }
 
-  // 2. Fallback to Local Filesystem
+  // 2. Fallback to Local Filesystem (With State Tracking)
   try {
     const data = await fs.readFile(DB_PATH, 'utf-8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    
+    // Add system flag if we are in production but postgres is missing
+    if (process.env.NODE_ENV === 'production' && !process.env.POSTGRES_URL) {
+      return { ...parsed, _system: { storageMissing: true } };
+    }
+    
+    return parsed;
   } catch (err) {
     console.error('Local File Read Error:', err);
     return {}; // Final fallback
