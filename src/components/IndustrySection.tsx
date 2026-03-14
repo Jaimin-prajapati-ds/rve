@@ -1,48 +1,26 @@
 'use client';
 
 import { motion } from 'framer-motion';
-
-const industries = [
-  {
-    title: "Automotive",
-    desc: "Dynamic reels, product highlights, and cinematic vehicle showcases.",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Hotels",
-    desc: "Present your property as a premium destination.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Products",
-    desc: "Trending launches, detailed showcases, and visually-rich product photos.",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Fashion",
-    desc: "Make bold style statements with every frame.",
-    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Pets",
-    desc: "Adorable reels, heartwarming moments, and premium pet product features.",
-    image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Hospital",
-    desc: "Capture the essence of comfort and experience.",
-    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop"
-  }
-];
+import { useState, useEffect } from 'react';
 
 export default function IndustrySection() {
+  const [content, setContent] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/cms')
+      .then(res => res.json())
+      .then(data => setContent(data.industry));
+  }, []);
+
+  if (!content) return null;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: { 
         staggerChildren: 0.1,
-        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+        ease: [0.16, 1, 0.3, 1] as any 
       }
     }
   };
@@ -54,7 +32,7 @@ export default function IndustrySection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+        ease: [0.16, 1, 0.3, 1] as any 
       }
     }
   };
@@ -70,15 +48,15 @@ export default function IndustrySection() {
         >
           <motion.div variants={itemVariants} className="mb-16 sm:mb-20">
             <span className="font-sans text-[10px] sm:text-[11px] tracking-[0.4em] opacity-30 uppercase font-bold text-[#86868B] mb-6 sm:mb-8 block">
-              [ INDUSTRIES // MARKETS ]
+              {content.subtitle}
             </span>
             <h2 className="font-sans text-3xl sm:text-4xl md:text-6xl text-white font-bold tracking-[-0.04em] leading-[1.2] sm:leading-tight px-2 sm:px-0">
-              Visual Solutions <br className="hidden sm:block" /> Across Diverse Industries
+              {content.title}
             </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 px-2 sm:px-0">
-            {industries.map((industry, i) => (
+            {content.items.map((industry: any, i: number) => (
               <motion.div 
                 key={i} 
                 variants={itemVariants}

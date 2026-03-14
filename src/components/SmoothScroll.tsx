@@ -6,10 +6,11 @@ import { ReactNode } from 'react';
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   return (
     <ReactLenis root options={{ 
-      duration: 1.2, 
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+      duration: 1.5, 
+      easing: (t: number) => 1 - Math.pow(1 - t, 4), // Quartic Out for luxury feel
+      lerp: 0.1,
       smoothWheel: true,
-      syncTouch: true, // Replaces smoothTouch in some versions or handled automatically
+      wheelMultiplier: 1,
     }}>
       {children}
     </ReactLenis>

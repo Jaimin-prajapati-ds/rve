@@ -1,11 +1,18 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [content, setContent] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/cms')
+      .then(res => res.json())
+      .then(data => setContent(data.newsletter));
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -13,6 +20,8 @@ export default function Newsletter() {
       setIsSubmitted(true);
     }
   };
+
+  if (!content) return null;
 
   const containerVariants = {
     hidden: { opacity: 0, y: 40 },
@@ -22,7 +31,7 @@ export default function Newsletter() {
       transition: { 
         duration: 1, 
         staggerChildren: 0.2,
-        ease: [0.16, 1, 0.3, 1] as any // eslint-disable-line @typescript-eslint/no-explicit-any
+        ease: [0.16, 1, 0.3, 1] as any 
       }
     }
   };
@@ -32,13 +41,12 @@ export default function Newsletter() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any } // eslint-disable-line @typescript-eslint/no-explicit-any
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any }
     }
   };
 
   return (
     <section className="relative py-24 sm:py-32 md:py-48 px-6 sm:px-8 md:px-16 bg-black overflow-hidden border-t border-white/5">
-      {/* Background Ambient Glow */}
       <div className="absolute bottom-[-20%] left-[-10%] w-[60%] h-[100%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute top-[20%] right-[-10%] w-[40%] h-[80%] bg-white/[0.01] blur-[150px] rounded-full pointer-events-none" />
 
@@ -50,15 +58,15 @@ export default function Newsletter() {
         className="max-w-[900px] mx-auto text-center relative z-10"
       >
         <motion.span variants={itemVariants} className="font-sans text-[10px] sm:text-[11px] tracking-[0.4em] opacity-30 uppercase font-bold text-[#86868B] mb-8 sm:mb-12 block">
-          [ STAY TUNED ]
+          {content.tagline}
         </motion.span>
         
         <motion.h2 variants={itemVariants} className="font-sans text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-white mb-8 sm:mb-10 font-bold tracking-[-0.04em] leading-[1.1]">
-          One step. <br /> <span className="text-white italic">Endless insight.</span>
+          {content.title1} <br /> <span className="text-white italic">{content.title2}</span>
         </motion.h2>
         
         <motion.p variants={itemVariants} className="font-sans text-base sm:text-lg md:text-[22px] text-[#86868B] mb-12 sm:mb-20 opacity-70 leading-relaxed max-w-[600px] mx-auto font-medium px-4">
-          We filter 100+ hours of world-class expert content into 3 minutes of actionable wisdom every week.
+          {content.description}
         </motion.p>
 
         <AnimatePresence mode="wait">
@@ -100,10 +108,9 @@ export default function Newsletter() {
           )}
         </AnimatePresence>
 
-        {/* Brand Copyright */}
         <motion.div variants={itemVariants} className="mt-24 sm:mt-32 pt-12 sm:pt-16 border-t border-white/[0.03]">
            <p className="font-sans text-[10px] sm:text-[11px] tracking-[0.2em] text-[#86868B] font-bold uppercase opacity-20">
-             © 2025 RVE Studios. All rights reserved.
+             {content.copyright}
            </p>
         </motion.div>
       </motion.div>

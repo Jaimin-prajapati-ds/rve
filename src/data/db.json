@@ -1,0 +1,136 @@
+{
+  "hero": {
+    "title": "Verified Headline",
+    "subtitle": "Trusted by top thought leaders and global brands.",
+    "icons": [
+      {
+        "name": "Malcolm Gladwell",
+        "handle": "@malcolmgladwell",
+        "description": "Seven-time NYT bestselling author, host of Revisionist History",
+        "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "Scott Galloway",
+        "handle": "@profgalloway",
+        "description": "NYU professor, serial entrepreneur, NYT bestselling author",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "Jesse Itzler",
+        "handle": "@jesseitzler",
+        "description": "Serial entrepreneur, co-owner of Atlanta hawks, NYT bestselling author",
+        "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop"
+      }
+    ]
+  },
+  "industry": {
+    "title": "Visual Solutions Across Diverse Industries",
+    "subtitle": "[ INDUSTRIES // MARKETS ]",
+    "items": [
+      {
+        "title": "Automotive",
+        "desc": "Dynamic reels, product highlights, and cinematic vehicle showcases.",
+        "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Hotels",
+        "desc": "Present your property as a premium destination.",
+        "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Products",
+        "desc": "Trending launches, detailed showcases, and visually-rich product photos.",
+        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Fashion",
+        "desc": "Make bold style statements with every frame.",
+        "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Pets",
+        "desc": "Adorable reels, heartwarming moments, and premium pet product features.",
+        "image": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Hospital",
+        "desc": "Capture the essence of comfort and experience.",
+        "image": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop"
+      }
+    ]
+  },
+  "services": {
+    "title1": "Visual Solutions.",
+    "title2": "For the next era.",
+    "items": [
+      {
+        "id": "01",
+        "title": "Content Team",
+        "desc": "We act as your head of content. Strategy, creative, production — all handled by our team.",
+        "img": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200",
+        "tag": "[valuable]"
+      },
+      {
+        "id": "02",
+        "title": "YouTube Growth",
+        "desc": "End-to-end YouTube support. Strategy, scripting, editing, thumbnails, and optimization.",
+        "img": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200",
+        "tag": "[strategic]"
+      },
+      {
+        "id": "03",
+        "title": "Brand Strategy",
+        "desc": "Positioning, messaging, and system-level creative direction for modern icons.",
+        "img": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=1200",
+        "tag": "[systemic]"
+      }
+    ]
+  },
+  "community": {
+    "tagline": "[ WHO WE ARE ]",
+    "title1": "A community of",
+    "title2": "Visionaries.",
+    "description": "RVE is more than an agency; it's a global hub for the elite. We gather the minds that shape the future of culture and commerce.",
+    "ctaText": "Join the Community on IG",
+    "ctaLink": "https://instagram.com",
+    "stats": [
+      {
+        "label": "CREATORS",
+        "value": 120,
+        "suffix": "+"
+      },
+      {
+        "label": "BRANDS",
+        "value": 45,
+        "suffix": "+"
+      },
+      {
+        "label": "REACH",
+        "value": 1.5,
+        "suffix": "B+"
+      },
+      {
+        "label": "COUNTRIES",
+        "value": 12,
+        "suffix": ""
+      }
+    ]
+  },
+  "vision": {
+    "tagline": "[ JOIN US ]",
+    "title1": "Introducing",
+    "title2": "The Vision Series",
+    "description": "In the world's greatest studio, we created a platform for the most relevant creators and emerging voices to share their wisdom.",
+    "launchTag": "[ Launching Soon ]",
+    "ctaText": "Learn More",
+    "ctaLink": "#",
+    "episodeTag": "Episode 01 // Premium Concept"
+  },
+  "newsletter": {
+    "tagline": "[ STAY TUNED ]",
+    "title1": "One step.",
+    "title2": "Endless insight.",
+    "description": "We filter 100+ hours of world-class expert content into 3 minutes of actionable wisdom every week.",
+    "copyright": "© 2025 RVE Studios. All rights reserved."
+  }
+}

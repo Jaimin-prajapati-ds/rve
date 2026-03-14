@@ -2,8 +2,10 @@
 
 import { motion, useSpring } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function CustomCursor() {
+  const pathname = usePathname();
   const [isHovering, setIsHovering] = useState(false);
   const [hoverText, setHoverText] = useState("");
 
@@ -12,6 +14,7 @@ export default function CustomCursor() {
   const cursorY = useSpring(0, springConfig);
 
   useEffect(() => {
+    if (pathname?.startsWith('/admin')) return;
     const mouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -40,7 +43,11 @@ export default function CustomCursor() {
       window.removeEventListener('mousemove', mouseMove);
       window.removeEventListener('mouseover', handleHover);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, pathname]);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <>
